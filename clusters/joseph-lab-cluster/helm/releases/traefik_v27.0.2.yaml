@@ -35,58 +35,58 @@ spec:
     # redirectTo:
     #   port: websecure
     extraObjects: 
-      # - apiVersion: networking.k8s.io/v1
-      #   kind: Ingress
-      #   metadata:
-      #     annotations:
-      #       cert-manager.io/cluster-issuer: letsencrypt-production
-      #       kubernetes.io/ingress.class: traefik
-      #       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      #       traefik.ingress.kubernetes.io/router.middlewares: grafana-grafana@kubernetescrd
-      #       traefik.ingress.kubernetes.io/router.tls: "true"
-      #     labels:
-      #       app: grafana
-      #     name: grafana
-      #     namespace: grafana
-      #   spec:
-      #     rules:
-      #     - host: josephtest.andrena.io
-      #       http:
-      #         paths:
-      #         - backend:
-      #             service:
-      #               name: grafana
-      #               port: 
-      #                 number: 80
-      #           path: /
-      #           pathType: Prefix  
-      #     tls:
-      #     - hosts:
-      #       - josephtest.andrena.io
-      #       secretName: josephtest-tls
+      - apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-production
+            kubernetes.io/ingress.class: traefik
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            traefik.ingress.kubernetes.io/router.tls: "true"
+          labels:
+            app: grafana
+          name: grafana
+          namespace: grafana
+        spec:
+          rules:
+          - host: josephtest.andrena.io
+            http:
+              paths:
+              - backend:
+                  service:
+                    name: grafana
+                    port: 
+                      number: 80
+                path: /
+                pathType: Prefix  
+          tls:
+          - hosts:
+            - josephtest.andrena.io
+            secretName: josephtest-tls
+      
       - apiVersion: traefik.containo.us/v1alpha1
         kind: IngressRoute
         metadata:
-          name: grafana
-          namespace: grafana
+          name: http-to-https-redirect
+          namespace: traefik
         spec:
           entryPoints:
             - websecure
           routes:
             - kind: Rule
-              match: Host(`josephtest.andrena.io`)
+              match: PathPrefix(`/`)
+              priority: 1
               middlewares:
-                - name: grafana
+                - name: redirect-to-https
               services:
-                - kind: Service
-                  name: grafana
-                  port: 80
-      
+                - kind: TraefikService
+                  name: noop@internal
+
       - apiVersion: traefik.containo.us/v1alpha1
         kind: Middleware
         metadata:
-          name: grafana
-          namespace: grafana
+          name: redirect-to-https
+          namespace: traefik
         spec:
           redirectScheme:
             scheme: https
