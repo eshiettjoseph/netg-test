@@ -39,6 +39,8 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
             kubernetes.io/ingress.class: traefik
+            traefik.ingress.kubernetes.io/router.middlewares: grafana-grafana@kubernetescrd
+            traefik.ingress.kubernetes.io/router.entrypoints: web
           labels:
             app: grafana
           name: grafana
