@@ -32,6 +32,8 @@ spec:
       requests:
         cpu: 200m
         memory: 200Mi
+    redirectTo:
+      port: websecure
     extraObjects: 
       - apiVersion: networking.k8s.io/v1
         kind: Ingress
@@ -39,8 +41,6 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
             kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/router.middlewares: grafana-grafana@kubernetescrd
-            traefik.ingress.kubernetes.io/router.entrypoints: web
           labels:
             app: grafana
           name: grafana
@@ -61,13 +61,3 @@ spec:
           - hosts:
             - josephtest.andrena.io
             secretName: josephtest-tls
-      
-      - apiVersion: traefik.containo.us/v1alpha1
-        kind: Middleware
-        metadata:
-          name: grafana
-          namespace: grafana
-        spec:
-          redirectScheme:
-            scheme: https
-            permanent: true
