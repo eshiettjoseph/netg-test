@@ -45,7 +45,7 @@ spec:
           namespace: grafana
         spec:
           rules:
-          - host: josephtest.andrena.io
+          - host: grafana.josephtest.andrena.io
             http:
               paths:
               - backend:
@@ -57,5 +57,5 @@ spec:
                 pathType: Prefix  
           tls:
           - hosts:
-            - josephtest.andrena.io
+            - "*.josephtest.andrena.io"
             secretName: josephtest-tls
