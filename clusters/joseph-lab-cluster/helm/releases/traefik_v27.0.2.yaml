@@ -35,35 +35,52 @@ spec:
     # redirectTo:
     #   port: websecure
     extraObjects: 
-      - apiVersion: networking.k8s.io/v1
-        kind: Ingress
+      # - apiVersion: networking.k8s.io/v1
+      #   kind: Ingress
+      #   metadata:
+      #     annotations:
+      #       cert-manager.io/cluster-issuer: letsencrypt-production
+      #       kubernetes.io/ingress.class: traefik
+      #       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      #       traefik.ingress.kubernetes.io/router.middlewares: grafana-grafana@kubernetescrd
+      #       traefik.ingress.kubernetes.io/router.tls: "true"
+      #     labels:
+      #       app: grafana
+      #     name: grafana
+      #     namespace: grafana
+      #   spec:
+      #     rules:
+      #     - host: josephtest.andrena.io
+      #       http:
+      #         paths:
+      #         - backend:
+      #             service:
+      #               name: grafana
+      #               port: 
+      #                 number: 80
+      #           path: /
+      #           pathType: Prefix  
+      #     tls:
+      #     - hosts:
+      #       - josephtest.andrena.io
+      #       secretName: josephtest-tls
+      - apiVersion: traefik.containo.us/v1alpha1
+        kind: IngressRoute
         metadata:
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-production
-            kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            traefik.ingress.kubernetes.io/router.middlewares: grafana-grafana@kubernetescrd
-            traefik.ingress.kubernetes.io/router.tls: "true"
-          labels:
-            app: grafana
           name: grafana
           namespace: grafana
         spec:
-          rules:
-          - host: josephtest.andrena.io
-            http:
-              paths:
-              - backend:
-                  service:
-                    name: grafana
-                    port: 
-                      number: 80
-                path: /
-                pathType: Prefix  
-          tls:
-          - hosts:
-            - josephtest.andrena.io
-            secretName: josephtest-tls
+          entryPoints:
+            - websecure
+          routes:
+            - kind: Rule
+              match: Host(`josephtest.andrena.io`)
+              middlewares:
+                - name: grafana
+              services:
+                - kind: Service
+                  name: grafana
+                  port: 80
       
       - apiVersion: traefik.containo.us/v1alpha1
         kind: Middleware
