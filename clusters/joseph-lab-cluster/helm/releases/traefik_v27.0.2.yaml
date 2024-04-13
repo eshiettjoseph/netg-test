@@ -53,7 +53,7 @@ spec:
                     name: grafana
                     port: 
                       number: 80
-                path: /grafana
+                path: /
                 pathType: Prefix  
           tls:
           - hosts:
