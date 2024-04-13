@@ -59,3 +59,13 @@ spec:
           - hosts:
             - josephtest.andrena.io
             secretName: josephtest-tls
+      
+      - apiVersion: traefik.containo.us/v1alpha1
+        kind: Middleware
+        metadata:
+          name: grafana
+          namespace: grafana
+        spec:
+          redirectScheme:
+            scheme: https
+            permanent: true
