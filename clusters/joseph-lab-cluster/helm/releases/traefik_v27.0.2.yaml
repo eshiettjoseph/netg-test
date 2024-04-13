@@ -32,3 +32,30 @@ spec:
       requests:
         cpu: 200m
         memory: 200Mi
+    extraObjects: 
+      - apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt-production
+            kubernetes.io/ingress.class: traefik
+          labels:
+            app: grafana
+          name: grafana
+          namespace: grafana
+        spec:
+          rules:
+          - host: josephtest.andrena.io
+            http:
+              paths:
+              - backend:
+                  service:
+                    name: grafana
+                    port: 
+                      number: 80
+                path: /grafana
+                pathType: Prefix  
+          tls:
+          - hosts:
+            - josephtest.andrena.io
+            secretName: josephtest-tls
