@@ -33,12 +33,6 @@ spec:
       requests:
         cpu: 200m
         memory: 200Mi
-    ports:
-      web:
-        redirectTo: websecure
-      websecure:
-        tls:
-          enabled: true
     
     extraObjects: 
       - apiVersion: traefik.containo.us/v1alpha1
@@ -51,7 +45,7 @@ spec:
             - websecure
           routes:
             - kind: Rule
-              match: Host(`josephtest.andrena.io`) 
+              match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
               middlewares:
                 - name: grafana
               services:
