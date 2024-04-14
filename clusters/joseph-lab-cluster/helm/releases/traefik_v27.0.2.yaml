@@ -62,7 +62,7 @@ spec:
           namespace: grafana
         spec:
           redirectRegex:
-            regex: "^http://josephtest.andrena.io"
+            regex: "^http://josephtest.andrena.io(.*)"
             replacement: "http://josephtest.andrena.io/"
             permanent: true
           redirectScheme:
