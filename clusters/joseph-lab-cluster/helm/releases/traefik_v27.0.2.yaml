@@ -54,7 +54,7 @@ spec:
             kubernetes.io/ingress.class: traefik
             traefik.ingress.kubernetes.io/redirect-permanent: "true"
             traefik.ingress.kubernetes.io/redirect-regex: "^http://josephtest.andrena.io(.*)"
-            traefik.ingress.kubernetes.io/redirect-replacement: "https://$1"
+            traefik.ingress.kubernetes.io/redirect-replacement: "https://$1/"
           labels:
             app: grafana
           name: grafana
