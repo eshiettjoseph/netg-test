@@ -46,13 +46,13 @@ spec:
             - websecure
           routes:
             - kind: Rule
-              match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
+              match: Host(`josephtest.andrena.io`)
               services:
                 - kind: Service
                   name: grafana
                   port: 80
             - kind: Rule
-              match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
+              match: Host(`josephtest.andrena.io`)
               middlewares:
                 - name: grafana
               services:
