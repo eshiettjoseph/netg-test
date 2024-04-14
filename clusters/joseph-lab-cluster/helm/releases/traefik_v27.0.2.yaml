@@ -25,6 +25,12 @@ spec:
     ingressRoute:
       dashboard:
         enabled: false
+    ports:
+      web:
+        redirectTo: websecure
+      websecure:
+        tls:
+          enabled: true
 
     resources:
       limits:
@@ -52,8 +58,6 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
             kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/redirect-permanent: "true"
-            traefik.ingress.kubernetes.io/ssl-redirect: true
           labels:
             app: grafana
           name: grafana
