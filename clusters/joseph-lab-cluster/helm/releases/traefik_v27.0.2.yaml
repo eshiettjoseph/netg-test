@@ -25,6 +25,7 @@ spec:
     ingressRoute:
       dashboard:
         enabled: false
+
     resources:
       limits:
         cpu: 1000m
@@ -32,8 +33,18 @@ spec:
       requests:
         cpu: 200m
         memory: 200Mi
-    # redirectTo:
-    #   port: websecure
+    entryPoints:
+      web:
+        address: :80
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
+
+  websecure:
+    address: :443
+    
     extraObjects: 
       - apiVersion: networking.k8s.io/v1
         kind: Ingress
@@ -67,26 +78,26 @@ spec:
       - apiVersion: traefik.containo.us/v1alpha1
         kind: IngressRoute
         metadata:
-          name: http-to-https-redirect
-          namespace: traefik
+          name: grafana
+          namespace: grafana
         spec:
           entryPoints:
             - websecure
           routes:
             - kind: Rule
-              match: PathPrefix(`/`)
-              priority: 1
+              match: Host(`josephtest.andrena.io`)
               middlewares:
-                - name: redirect-to-https
+                - name: grafana
               services:
-                - kind: TraefikService
-                  name: noop@internal
+                - kind: Service
+                  name: grafana
+                  port: 80
 
       - apiVersion: traefik.containo.us/v1alpha1
         kind: Middleware
         metadata:
-          name: redirect-to-https
-          namespace: traefik
+          name: grafana
+          namespace: grafana
         spec:
           redirectScheme:
             scheme: https
