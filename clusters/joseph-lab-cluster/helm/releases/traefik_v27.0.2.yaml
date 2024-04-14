@@ -33,17 +33,17 @@ spec:
       requests:
         cpu: 200m
         memory: 200Mi
-    # entryPoints:
-    #   web:
-    #     address: :80
-    #     http:
-    #       redirections:
-    #         entryPoint:
-    #           to: websecure
-    #           scheme: https
+    entryPoints:
+      web:
+        address: :80
+        http:
+          redirections:
+            entryPoint:
+              to: websecure
+              scheme: https
 
-    #   websecure:
-    #     address: :443
+      websecure:
+        address: :443
     
     extraObjects: 
       - apiVersion: networking.k8s.io/v1
@@ -74,35 +74,3 @@ spec:
           - hosts:
             - josephtest.andrena.io
             secretName: josephtest-tls
-      
-      - apiVersion: traefik.containo.us/v1alpha1
-        kind: IngressRoute
-        metadata:
-          name: grafana
-          namespace: grafana
-        spec:
-          entryPoints:
-            - websecure
-          routes:
-            - kind: Rule
-              match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
-              middlewares:
-                - name: grafana
-              services:
-                - kind: Service
-                  name: grafana
-                  port: 80
-
-      - apiVersion: traefik.containo.us/v1alpha1
-        kind: Middleware
-        metadata:
-          name: grafana
-          namespace: grafana
-        spec:
-          redirectRegex:
-            regex: "^http://josephtest.andrena.io"
-            replacement: "https://josephtest.andrena.io/"
-            permanent: true
-          redirectScheme:
-            scheme: https
-            permanent: true
