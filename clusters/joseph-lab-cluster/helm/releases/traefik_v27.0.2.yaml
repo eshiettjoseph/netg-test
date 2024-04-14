@@ -52,8 +52,9 @@ spec:
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt-production
             kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/redirect-permanent: "true"
+            traefik.ingress.kubernetes.io/redirect-regex: "^http://josephtest.andrena.io(.*)"
+            traefik.ingress.kubernetes.io/redirect-replacement: "https://$1"
           labels:
             app: grafana
           name: grafana
