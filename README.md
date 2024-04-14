@@ -7,6 +7,7 @@
     c. make sure grafana has valid certificate using HTTP acme challenge
 
 ## Directory Structure
+```
 clusters
     └── joseph-lab-cluster
         ├── cert-manager
@@ -26,3 +27,7 @@ clusters
                 ├── grafana.yaml
                 ├── jetstack.yaml
                 └── traefik.yaml
+```
+
+## Prerequisites
+- Flux. See [documentation](https://fluxcd.io/flux/installation/) for more information
