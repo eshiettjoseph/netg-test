@@ -42,7 +42,7 @@ spec:
           namespace: grafana
         spec:
           entryPoints:
-            - websecure
+            - web
           routes:
             - kind: Rule
               match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
@@ -52,6 +52,23 @@ spec:
                 - kind: Service
                   name: grafana
                   port: 80
+      - apiVersion: traefik.containo.us/v1alpha1
+        kind: IngressRoute
+        metadata:
+          name: grafana
+          namespace: grafana
+        spec:
+          entryPoints:
+            - websecure
+          routes:
+            - kind: Rule
+              match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
+              # middlewares:
+              #   - name: grafana
+              services:
+                - kind: Service
+                  name: grafana
+                  port: 443
           tls:
             secretName: josephtest-tls
 
