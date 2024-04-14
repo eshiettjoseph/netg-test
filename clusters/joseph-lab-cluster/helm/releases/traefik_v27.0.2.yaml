@@ -85,7 +85,7 @@ spec:
             - websecure
           routes:
             - kind: Rule
-              match: Host(`josephtest.andrena.io`)
+              match: Host(`josephtest.andrena.io`) && PathPrefix(`/`)
               middlewares:
                 - name: grafana
               services:
