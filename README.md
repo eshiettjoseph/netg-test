@@ -2,8 +2,11 @@
 1. Set up and deploy ingress-controller of choice
 2. Setup Flux
 3. Commit kustomizations on flux to install
+
     a. ingress controller (any of your choice, i like traefik)
+
     b. deploy grafana on it, (https://artifacthub.io/packages/helm/grafana/grafana)
+    
     c. make sure grafana has valid certificate using HTTP acme challenge
 
 ## Directory Structure
