@@ -53,7 +53,7 @@ spec:
             cert-manager.io/cluster-issuer: letsencrypt-production
             kubernetes.io/ingress.class: traefik
             traefik.ingress.kubernetes.io/redirect-permanent: "true"
-            traefik.ingress.kubernetes.io/rewrite-target: /
+            traefik.ingress.kubernetes.io/ssl-redirect: true
           labels:
             app: grafana
           name: grafana
